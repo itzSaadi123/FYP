@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="Upload a video or provide a video link to detect profanity and extract text using advanced speech recognition.">
+    <meta name="keywords" content="Video, Profanity Detection, Speech Recognition, AI, Machine Learning">
+    <title>ItzSaadi</title>
+
+    <style>
+        /* Navbar Styling */
+        .navbar {
+            background-color: #8342b1; /* Purple */
+            padding: 15px 0;
+            text-align: center;
+        }
+
+        .navbar ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar ul li {
+            display: inline;
+            margin: 0 20px;
+        }
+
+        .navbar ul li a {
+            color: rgb(240, 233, 233);
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .navbar ul li a:hover {
+            color: #373740; /* Gold */
+        }
+
+        /* Body Styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #7c6da0; /* Dark Purple */
+            background-image: url('/static/images/photo.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        main {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            padding: 2rem 1rem;
+            background-color: rgba(143, 99, 175, 0.8); /* Purple with opacity */
+            color: rgb(74, 26, 26);
+        }
+
+        header img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1rem;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin: 0;
+        }
+
+        /* Form Section */
+        .form-section {
+            text-align: center;
+            margin: 30px auto;
+            max-width: 500px;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-section h1 {
+            font-size: 28px;
+            color: rgb(74, 26, 26); /* Purple */
+            margin-bottom: 20px;
+        }
+
+        .form-section form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .form-section label {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #6A0DAD; /* Purple */
+        }
+
+        .form-section input {
+            padding: 10px;
+            font-size: 16px;
+            margin: 10px 0;
+            width: 80%;
+            max-width: 300px;
+            border: 1px solid #6A0DAD; /* Purple */
+            border-radius: 5px;
+        }
+
+        .form-section select {
+            padding: 10px;
+            font-size: 16px;
+            margin: 10px 0;
+            width: 80%;
+            max-width: 300px;
+            border: 1px solid #6A0DAD; /* Purple */
+            border-radius: 5px;
+        }
+
+        .form-section button {
+            padding: 12px 20px;
+            background-color: #6A0DAD; /* Purple */
+            color: white;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .form-section button:hover {
+            background-color: #4B0082; /* Dark Purple */
+        }
+
+        .form-section h2 {
+            margin: 20px 0;
+            font-size: 20px;
+            color: #6A0DAD; /* Purple */
+        }
+        .negative {
+            color: red;
+        }
+
+
+        /* Loading Spinner */
+        #loading {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .spinner {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #6A0DAD; /* Purple */
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Fun Fact */
+        #funFact {
+            display: none;
+            margin-top: 20px;
+            font-size: 18px;
+            color: #6A0DAD; /* Purple */
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 15px 0;
+            background-color: #Cbaae2; /* Purple */
+            color: rgb(52, 23, 23);
+            font-size: 14px;
+        }
+
+        footer p {
+            margin: 5px 0;
+        }
+
+        /* Games Container */
+        .games-container {
+            display: none; /* Initially hidden */
+            justify-content: space-between;
+            width: 100%;
+            max-width: 800px;
+            margin-top: 20px;
+            gap: 20px; /* Gap between games */
+        }
+
+        /* Tic Tac Toe Game */
+        .tic-tac-toe {
+            width: 45%;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .tic-tac-toe h2 {
+            text-align: center;
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #6A0DAD; /* Purple */
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .cell {
+            width: 80px; /* Increased size */
+            height: 80px; /* Increased size */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f0f0f0;
+            border: 1px solid #6A0DAD; /* Purple */
+            font-size: 24px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .cell:hover {
+            background-color: #ddd;
+        }
+
+        .status {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 16px;
+            color: #6A0DAD; /* Purple */
+        }
+
+        .reset-button {
+            display: block;
+            margin: 10px auto;
+            padding: 5px 10px;
+            background-color: #6A0DAD; /* Purple */
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .reset-button:hover {
+            background-color: #4B0082; /* Dark Purple */
+        }
+
+        /* Memory Card Game */
+        .memory-game {
+            width: 45%;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .memory-game h2 {
+            text-align: center;
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #6A0DAD; /* Purple */
+        }
+
+        .memory-board {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .memory-card {
+            width: 80px;
+            height: 80px;
+            background-color: #f0f0f0;
+            border: 1px solid #6A0DAD; /* Purple */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: transform 0.3s ease;
+        }
+
+        .memory-card.flipped {
+            background-color: #FFD700; /* Gold */
+            transform: rotateY(180deg);
+        }
+
+        .memory-card.matched {
+            background-color: #4caf50;
+            cursor: default;
+        }
+
+        .memory-status {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 16px;
+            color: #6A0DAD; /* Purple */
+        }
+
+        .memory-reset-button {
+            display: block;
+            margin: 10px auto;
+            padding: 5px 10px;
+            background-color: #6A0DAD; /* Purple */
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .memory-reset-button:hover {
+            background-color: #4B0082; /* Dark Purple */
+        }
+        .falling-letters {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2rem;
+            font-weight: bold;
+            color: rgba(255, 255, 255, 0.8);
+            animation: fall 5s linear infinite;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-100px) translateX(-50%); opacity: 1; }
+            100% { transform: translateY(100vh) translateX(-50%); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    {% include 'navbar.html' %}
+
+    <header>
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Website Logo" />
+        <h1>Video Profanity Detector</h1>
+    </header>
+
+    <!-- Flash Messages -->
+    <div class="flash-message">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <main>
+        <!-- Form Section -->
+        <section class="form-section">
+            <h1>Upload a Video or Provide a Link</h1>
+            <form action="/upload" method="POST" enctype="multipart/form-data" id="uploadForm">
+                <!-- File Upload -->
+                <label for="file">Choose a video file:</label>
+                <input type="file" name="file" id="file">
+                <br><br>
+                <!-- Link Input -->
+                <label for="link">Or paste a video link:</label>
+                <input type="text" name="link" id="link" placeholder="Enter video link here">
+                <br><br>
+                <!-- Language Selection -->
+                <label for="language">Select Language:</label>
+                <select name="language" id="language">
+                    <option value="auto">Auto Detect</option>
+                    <option value="en">English</option>
+                    <option value="ur">Urdu</option>
+                    <option value="hi">Hindi</option>
+                </select>
+                <br><br>
+                <button type="submit">Submit</button>
+            </form>
+           
+        </section>
+
+        <!-- Loading Spinner -->
+        <div id="loading">
+            <div class="spinner"></div>
+            <p>Please wait, your video is being processed...</p>
+        </div>
+
+        <!-- Games Container -->
+        <div class="games-container" id="gamesContainer">
+            <!-- Tic Tac Toe Game -->
+            <div class="tic-tac-toe">
+                <h2>Tic Tac Toe</h2>
+                <div class="board">
+                    <div class="cell" data-index="0"></div>
+                    <div class="cell" data-index="1"></div>
+                    <div class="cell" data-index="2"></div>
+                    <div class="cell" data-index="3"></div>
+                    <div class="cell" data-index="4"></div>
+                    <div class="cell" data-index="5"></div>
+                    <div class="cell" data-index="6"></div>
+                    <div class="cell" data-index="7"></div>
+                    <div class="cell" data-index="8"></div>
+                </div>
+                <div class="status"></div>
+                <button class="reset-button">Reset Game</button>
+            </div>
+
+            <!-- Memory Card Game -->
+            <div class="memory-game">
+                <h2>Memory Card Game</h2>
+                <div class="memory-board"></div>
+                <div class="memory-status"></div>
+                <button class="memory-reset-button">Reset Game</button>
+            </div>
+        </div>
+    </main>
+
+    <div id="falling-letters-container"></div>
+    <footer>
+        <p>&copy; 2025 Video Profanity Detector. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        // Show loading spinner and fun fact when form is submitted
+        document.getElementById('uploadForm').onsubmit = function() {
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('funFact').style.display = 'block';
+        };
+
+        // Show games container when form is submitted
+        document.getElementById('uploadForm').addEventListener('submit', function() {
+            document.getElementById('gamesContainer').style.display = 'flex';
+        });
+
+        const board = document.querySelector('.board');
+const cells = document.querySelectorAll('.cell');
+const status = document.querySelector('.status');
+const resetButton = document.querySelector('.reset-button');
+let currentPlayer = 'X';
+let gameActive = true;
+let gameState = ['', '', '', '', '', '', '', '', ''];
+
+const winningConditions = [
+    [0, 1, 2], [3, 4, 5], [6, 7, 8],
+    [0, 3, 6], [1, 4, 7], [2, 5, 8],
+    [0, 4, 8], [2, 4, 6]
+];
+
+function handleCellClick(event) {
+    const clickedCell = event.target;
+    const clickedCellIndex = parseInt(clickedCell.getAttribute('data-index'));
+
+    if (gameState[clickedCellIndex] !== '' || !gameActive) {
+        return;
+    }
+
+    gameState[clickedCellIndex] = currentPlayer;
+    clickedCell.textContent = currentPlayer;
+
+    checkForWinner();
+
+    if (gameActive) {
+        currentPlayer = 'O';
+        status.textContent = "Computer is thinking...";
+        setTimeout(computerMove, 500);
+    }
+}
+
+function computerMove() {
+    let move = findWinningMove('O') || findWinningMove('X') || getBestMove();
+    if (move !== null) {
+        gameState[move] = 'O';
+        cells[move].textContent = 'O';
+        checkForWinner();
+    }
+    if (gameActive) {
+        currentPlayer = 'X';
+        status.textContent = "Your turn (X)";
+    }
+}
+
+function findWinningMove(player) {
+    for (let [a, b, c] of winningConditions) {
+        let values = [gameState[a], gameState[b], gameState[c]];
+        if (values.filter(v => v === player).length === 2 && values.includes('')) {
+            return [a, b, c].find(index => gameState[index] === '');
+        }
+    }
+    return null;
+}
+
+function getBestMove() {
+    const availableSpots = gameState.map((cell, index) => cell === '' ? index : null).filter(index => index !== null);
+    return availableSpots.includes(4) ? 4 : availableSpots.find(index => [0, 2, 6, 8].includes(index)) || availableSpots[0];
+}
+
+function checkForWinner() {
+    if (checkWin(gameState, 'X')) {
+        status.textContent = 'You win!';
+        gameActive = false;
+    } else if (checkWin(gameState, 'O')) {
+        status.textContent = 'Computer wins!';
+        gameActive = false;
+    } else if (!gameState.includes('')) {
+        status.textContent = 'Draw!';
+        gameActive = false;
+    }
+}
+
+function resetGame() {
+    gameState = ['', '', '', '', '', '', '', '', ''];
+    gameActive = true;
+    currentPlayer = 'X';
+    status.textContent = "Your turn (X)";
+    cells.forEach(cell => cell.textContent = '');
+}
+
+cells.forEach(cell => cell.addEventListener('click', handleCellClick));
+resetButton.addEventListener('click', resetGame);
+
+function checkWin(board, player) {
+    return winningConditions.some(([a, b, c]) => board[a] === player && board[b] === player && board[c] === player);
+}
+
+        // Memory Card Game Logic
+        const memoryBoard = document.querySelector('.memory-board');
+        const memoryStatus = document.querySelector('.memory-status');
+        const memoryResetButton = document.querySelector('.memory-reset-button');
+        let cards = [];
+        let flippedCards = [];
+        let matchedCards = [];
+
+        const cardValues = [
+            '🍎', '🍌', '🍇', '🍓', '🍊', '🍉',
+            '🍎', '🍌', '🍇', '🍓', '🍊', '🍉'
+        ];
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function createMemoryBoard() {
+            const shuffledCards = shuffle(cardValues);
+            memoryBoard.innerHTML = '';
+            shuffledCards.forEach((value, index) => {
+                const card = document.createElement('div');
+                card.classList.add('memory-card');
+                card.dataset.value = value;
+                card.dataset.index = index;
+                card.textContent = '';
+                card.addEventListener('click', flipCard);
+                memoryBoard.appendChild(card);
+            });
+        }
+
+        function flipCard(event) {
+            const card = event.target;
+            if (flippedCards.length < 2 && !flippedCards.includes(card) && !matchedCards.includes(card)) {
+                card.textContent = card.dataset.value;
+                card.classList.add('flipped');
+                flippedCards.push(card);
+
+                if (flippedCards.length === 2) {
+                    checkForMatch();
+                }
+            }
+        }
+
+        function checkForMatch() {
+            const [card1, card2] = flippedCards;
+            if (card1.dataset.value === card2.dataset.value) {
+                card1.classList.add('matched');
+                card2.classList.add('matched');
+                matchedCards.push(card1, card2);
+                flippedCards = [];
+
+                if (matchedCards.length === cardValues.length) {
+                    memoryStatus.textContent = 'You win!';
+                }
+            } else {
+                setTimeout(() => {
+                    card1.textContent = '';
+                    card2.textContent = '';
+                    card1.classList.remove('flipped');
+                    card2.classList.remove('flipped');
+                    flippedCards = [];
+                }, 1000);
+            }
+        }
+
+        function resetMemoryGame() {
+            flippedCards = [];
+            matchedCards = [];
+            memoryStatus.textContent = '';
+            createMemoryBoard();
+        }
+
+        memoryResetButton.addEventListener('click', resetMemoryGame);
+
+        // Initialize Memory Game
+        createMemoryBoard();
+    </script>
+    <script>
+        function createFallingLetter(letter) {
+            let span = document.createElement("span");
+            span.className = "falling-letters";
+            span.textContent = letter;
+            span.style.left = Math.random() * 100 + "vw";
+            span.style.animationDuration = Math.random() * 3 + 2 + "s";
+            document.getElementById("falling-letters-container").appendChild(span);
+            setTimeout(() => { span.remove(); }, 5000);
+        }
+
+        setInterval(() => {
+            let letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            let letter = letters[Math.floor(Math.random() * letters.length)];
+            createFallingLetter(letter);
+        }, 500);
+    </script>
+</body>
+</html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #7c6da0; /* Dark Purple */
+    background-image: url('/static/images/photo.png');
+    background-size: contain; /* Ensures the entire image is visible */
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center; /* Centers the image */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    }
+
+    .navbar {
+      background-color: #8342b1;
+      padding: 15px 0;
+      text-align: center;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+    }
+
+    .navbar ul {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      padding: 0;
+    }
+
+    .navbar ul li {
+      margin: 0 15px;
+    }
+
+    .navbar ul li a {
+      color: white;
+      text-decoration: none;
+      font-size: 18px;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+
+    .navbar ul li a:hover {
+      color: #28282a;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      padding-top: 80px;
+    }
+
+    form {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      width: 90%;
+      max-width: 400px;
+    }
+
+    input, textarea, button {
+      width: 100%;
+      margin-bottom: 15px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    .btn-container {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .btn-container button {
+      width: 48%;
+      font-size: 16px;
+      cursor: pointer;
+      border: none;
+      padding: 10px;
+      color: white;
+      border-radius: 5px;
+    }
+
+    .whatsapp-btn {
+      background-color: #25d366;
+    }
+
+    .whatsapp-btn:hover {
+      background-color: #1ebe57;
+    }
+
+    .email-btn {
+      background-color: #6A0DAD;
+    }
+
+    .email-btn:hover {
+      background-color: #5b0c91;
+    }
+
+    footer {
+      text-align: center;
+      padding: 10px;
+      background-color: #cbaee2;
+      color: rgb(52, 23, 23);
+      font-size: 14px;
+    }
+
+    @media (max-width: 600px) {
+      .btn-container {
+        flex-direction: column;
+      }
+      .btn-container button {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="navbar">
+    <ul>
+      <li><a href="{{ url_for('home') }}">Home</a></li>
+      <li><a href="{{ url_for('contact') }}">Contact</a></li>
+      <li><a href="{{ url_for('about') }}">About Us</a></li> 
+    </ul>
+  </div>
+
+  <div class="container">
+    <form onsubmit="return validateForm();">
+      <h2>Contact Us</h2>
+      <p class="error-message" id="error-message" style="color: red; display: none;">Please fill out all fields.</p>
+      <input type="text" id="name" placeholder="Your Name" required>
+      <input type="email" id="email" placeholder="Your Email" required>
+      <textarea id="message" placeholder="Your Message" rows="5" required></textarea>
+      <div class="btn-container">
+        <button type="button" class="whatsapp-btn" onclick="sendToWhatsApp()">WhatsApp</button>
+        <button type="button" class="email-btn" onclick="sendToEmail()">Email</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    function validateForm() {
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const message = document.getElementById('message').value.trim();
+      const errorMessage = document.getElementById('error-message');
+      if (name === "" || email === "" || message === "") {
+        errorMessage.style.display = 'block';
+        return false;
+      } else {
+        errorMessage.style.display = 'none';
+        return true;
+      }
+    }
+
+    function sendToWhatsApp() {
+      if (!validateForm()) return;
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const message = document.getElementById('message').value;
+      const whatsappLink = `https://wa.me/923121146465?text=Name: ${encodeURIComponent(name)}%0AEmail: ${encodeURIComponent(email)}%0AMessage: ${encodeURIComponent(message)}`;
+      window.open(whatsappLink, '_blank');
+    }
+
+    function sendToEmail() {
+      if (!validateForm()) return;
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const message = document.getElementById('message').value;
+      const mailtoLink = `mailto:studypoint135@gmail.com?subject=Contact%20Form&body=Name: ${encodeURIComponent(name)}%0AEmail: ${encodeURIComponent(email)}%0AMessage: ${encodeURIComponent(message)}`;
+      window.location.href = mailtoLink;
+    }
+  </script>
+
+</body>
+<footer>
+  <p>&copy; 2025 Video Profanity Detector. All Rights Reserved.</p>
+</footer>
+</html>

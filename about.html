@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A complete solution for bad words detection, subtitle generation, and audio extraction from videos.">
+    <meta name="keywords" content="Subtitle Generator, Profanity Detection, Audio Extraction, AI Video Tools, Content Safety">
+    <title>About | Video Profanity Detector</title>
+
+    <style>
+     body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #7c6da0;
+    background-image: url('/static/images/photo.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    color: #4a1a1a;
+}
+
+.navbar {
+    background-color: #8342b1;
+    padding: 15px 0;
+    text-align: center;
+}
+
+.navbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar ul li {
+    display: inline;
+    margin: 0 20px;
+}
+
+.navbar ul li a {
+    color: rgb(247, 241, 241);
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.navbar ul li a:hover {
+    color: #28282a;
+}
+
+header {
+    text-align: center;
+    padding: 2rem 1rem;
+    background-color: rgba(143, 99, 175, 0.8);
+    color: rgb(74, 26, 26);
+}
+
+header h1 {
+    font-size: 2.5rem;
+    margin: 0;
+}
+
+.main-content {
+    max-width: 900px;
+    margin: 20px auto;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+.different-about-us {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+.falling-letters {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 2rem;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.8);
+    animation: fall 5s linear infinite;
+}
+
+@keyframes fall {
+    0% { transform: translateY(-100px) translateX(-50%); opacity: 1; }
+    100% { transform: translateY(100vh) translateX(-50%); opacity: 0; }
+}
+
+footer {
+    text-align: center;
+    padding: 15px 0;
+    background-color: #cbaee2;
+    color: rgb(52, 23, 23);
+    font-size: 14px;
+}
+
+footer p {
+    margin: 5px 0;
+}
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <ul>
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+            <li><a href="{{ url_for('contact') }}">Contact</a></li>
+            <li><a href="{{ url_for('about') }}">About us</a></li> 
+        </ul>
+    </div>
+
+    <header>
+        <h1>About Our Website</h1>
+        <p>Your solution for profanity detection, subtitle generation, and audio extraction.</p>
+    </header>
+
+   <!-- Main Content -->
+   <div class="main-content">
+    <h2>Overview</h2>
+    <p>
+        &#128073;Our website is designed to make video content safe, accessible, and user-friendly. 
+        The tool focuses on detecting profane words in video audio, generating accurate subtitles, and providing the option to extract audio from videos.
+    </p>
+
+    <h2>Key Features</h2>
+    <ul>
+        <li><strong>Profanity Detection:</strong> Advanced AI algorithms identify and flag bad words in video audio, helping to maintain content safety for all audiences.</li>
+        <li><strong>Subtitle Generation:</strong> Automatically creates precise subtitles for videos, enhancing accessibility for the hearing impaired and non-native speakers.</li>
+        <li><strong>Audio Download:</strong> Allows users to extract and download audio from videos for various purposes, such as transcription or analysis.</li>
+        <li><strong>Customizable Filters:</strong> Users can adjust detection filters based on cultural or regional preferences.</li>
+        <li><strong>Detailed Reports:</strong> Generates reports highlighting flagged words, their timestamps, and associated video content for review.</li>
+    </ul>
+
+    <h2>Why Choose Our System?</h2>
+    <p>
+        &#128073;This system is ideal for content creators, educators, parents, and businesses who want to ensure their video content is safe, professional, and suitable for all audiences. 
+        It provides a streamlined approach to video analysis and processing, saving time and effort while searching for unethical content.
+    </p>
+
+    <h1 class="different-about-us">WHAT'S DIFFERENT ABOUT US</h1>
+    <div class="different-about-us">
+        <h2>Easy &#128526;</h2>
+        <h2>Free &#129297;</h2>
+        <h2>Accessible &#129321;</h2>
+        <h2>Online &#129312;</h2>
+        <h2>No spam or ads &#128558;</h2>
+    </div>
+</div>
+
+    <div id="falling-letters-container"></div>
+
+    <footer>
+        <p>&copy; 2025 Video Profanity Checker. All Rights Reserved.</p>
+    </footer>
+    
+    <script>
+        function createFallingLetter(letter) {
+            let span = document.createElement("span");
+            span.className = "falling-letters";
+            span.textContent = letter;
+            span.style.left = Math.random() * 100 + "vw";
+            span.style.animationDuration = Math.random() * 3 + 2 + "s";
+            document.getElementById("falling-letters-container").appendChild(span);
+            setTimeout(() => { span.remove(); }, 5000);
+        }
+
+        setInterval(() => {
+            let letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            let letter = letters[Math.floor(Math.random() * letters.length)];
+            createFallingLetter(letter);
+        }, 500);
+    </script>
+</body>
+</html>
